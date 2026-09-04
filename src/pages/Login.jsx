@@ -4,9 +4,10 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
+import { Link } from "react-router";
 import { useAuth } from "../context/AuthContext";
 
-function Login({ onSwitch }) {
+function Login() {
   const { login } = useAuth();
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState(null);
@@ -70,14 +71,7 @@ function Login({ onSwitch }) {
             </Button>
           </Form>
           <p className="mt-3 mb-0 text-center">
-            Need an account?{" "}
-            <Button
-              variant="link"
-              className="p-0 align-baseline"
-              onClick={onSwitch}
-            >
-              Sign up
-            </Button>
+            Need an account? <Link to="/signup">Sign up</Link>
           </p>
         </Card.Body>
       </Card>

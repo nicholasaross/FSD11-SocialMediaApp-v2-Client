@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
+import { Link } from "react-router";
 import { useAuth } from "../context/AuthContext";
 
 const EMPTY_FORM = {
@@ -15,7 +16,7 @@ const EMPTY_FORM = {
   imageUrl: "",
 };
 
-function Signup({ onSwitch }) {
+function Signup() {
   const { signup } = useAuth();
   const [form, setForm] = useState(EMPTY_FORM);
   const [error, setError] = useState(null);
@@ -129,14 +130,7 @@ function Signup({ onSwitch }) {
             </Button>
           </Form>
           <p className="mt-3 mb-0 text-center">
-            Already have an account?{" "}
-            <Button
-              variant="link"
-              className="p-0 align-baseline"
-              onClick={onSwitch}
-            >
-              Log in
-            </Button>
+            Already have an account? <Link to="/login">Log in</Link>
           </p>
         </Card.Body>
       </Card>

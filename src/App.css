@@ -5,3 +5,8 @@
   border-radius: 50%;
   margin-bottom: 1rem;
 }
+
+/* three times the button's natural "Feed" width at size="lg" (76.5px) */
+.feed-button {
+  min-width: 230px;
+}
