@@ -4,8 +4,7 @@ import AddNewUser from "../components/AddNewUser";
 import User from "../components/User";
 import { useAuth } from "../context/AuthContext";
 import api from "../api/axios";
-
-const DEFAULT_AVATAR = "/assets/default.png";
+import { DEFAULT_AVATAR } from "../utils/avatar";
 
 // swap in the local default when a stored imageUrl fails to load; the guard
 // stops an endless loop if the default itself is missing

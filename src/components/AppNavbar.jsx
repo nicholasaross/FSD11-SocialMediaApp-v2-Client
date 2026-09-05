@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { FcVoicePresentation } from "react-icons/fc";
+import CreatePost from "./CreatePost";
 import RestoreSite from "./RestoreSite";
 import { Link } from "react-router";
 import { useAuth } from "../context/AuthContext";
@@ -25,14 +26,17 @@ function AppNavbar() {
           </Navbar.Brand>
           {currentUser?.isAdmin && <RestoreSite />}
           {token && (
-            <Button
-              as={Link}
-              to="/feed"
-              variant="primary"
-              className="feed-button ms-3"
-            >
-              Feed
-            </Button>
+            <>
+              <Button
+                as={Link}
+                to="/feed"
+                variant="primary"
+                className="navbar-action-button ms-3"
+              >
+                Feed
+              </Button>
+              <CreatePost />
+            </>
           )}
         </div>
         {/* logged out there is nothing to collapse, so the toggle goes too */}

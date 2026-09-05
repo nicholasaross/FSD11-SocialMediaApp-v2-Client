@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { CiEdit } from "react-icons/ci";
 import api from "../api/axios";
+import { useAuth } from "../context/AuthContext";
 
 function buildForm(user) {
   return {
@@ -17,6 +18,7 @@ function buildForm(user) {
 }
 
 function EditUser({ user, onUserUpdated }) {
+  const { updateCurrentUser } = useAuth();
   const [show, setShow] = useState(false);
   const [form, setForm] = useState(() => buildForm(user));
   const [error, setError] = useState(null);
@@ -56,7 +58,11 @@ function EditUser({ user, onUserUpdated }) {
     };
 
     try {
-      await api.put(`/users/${user._id}`, payload);
+      const response = await api.put(`/users/${user._id}`, payload);
+      // the reply is the updated account: hand it to the session so editing
+      // your own profile doesn't leave the navbar on login-time values. it is
+      // a no-op when an admin edits somebody else
+      updateCurrentUser(response.data.data);
       onUserUpdated?.();
       setShow(false);
     } catch (requestError) {

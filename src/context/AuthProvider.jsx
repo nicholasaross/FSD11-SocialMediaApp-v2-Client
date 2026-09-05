@@ -37,6 +37,18 @@ export function AuthProvider({ children }) {
 
   const logout = () => persist(null, null);
 
+  // an account edit hands back the updated record, in the same shape login
+  // returns. mirroring it into the session keeps the navbar greeting and
+  // isAdmin off login-time values, which otherwise sat stale until a re-login.
+  // an admin editing someone else's account passes through here too, so the id
+  // check is what stops their session picking up the other person's details
+  const updateCurrentUser = (user) => {
+    if (!user?._id || user._id !== currentUser?._id) {
+      return;
+    }
+    persist(token, user);
+  };
+
   // the axios interceptor clears storage and fires this when a token is
   // rejected mid-session; mirror that into react state
   useEffect(() => {
@@ -49,7 +61,9 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ token, currentUser, login, signup, logout }}>
+    <AuthContext.Provider
+      value={{ token, currentUser, login, signup, logout, updateCurrentUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

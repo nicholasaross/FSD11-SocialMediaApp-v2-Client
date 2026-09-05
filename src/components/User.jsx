@@ -1,13 +1,16 @@
+import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import { Link } from "react-router";
 import DeleteUser from "./DeleteUser";
 import EditUser from "./EditUser";
-
-const DEFAULT_AVATAR = "/assets/default.png";
+import { DEFAULT_AVATAR } from "../utils/avatar";
 
 function User({ user, currentUserId, isAdmin, onEdit, onDelete, onImageError }) {
-  // server only lets you PUT your own account (403 otherwise), so edit shows
-  // only on the signed-in user's own card
   const isOwnAccount = Boolean(currentUserId) && user._id === currentUserId;
+  // requireSelfOrAdmin: you may PUT your own account, and an admin may PUT
+  // anyone's. the server updates only the fields the body carries, so a
+  // password and admin rights survive an edit made from this form
+  const canEdit = isOwnAccount || Boolean(isAdmin);
   // admins may remove anyone; their own card keeps Edit instead, since
   // deleting yourself would pull the account out from under the session
   const canDelete = Boolean(isAdmin) && !isOwnAccount;
@@ -27,8 +30,19 @@ function User({ user, currentUserId, isAdmin, onEdit, onDelete, onImageError }) 
           <p>Email: {user.email}</p>
           {user.biography && <p>{user.biography}</p>}
         </Card.Text>
-        {isOwnAccount && <EditUser user={user} onUserUpdated={onEdit} />}
-        {canDelete && <DeleteUser user={user} onUserDeleted={onDelete} />}
+        <div className="d-flex justify-content-center gap-2">
+          {/* ?author= narrows the feed to this user, which is the only thing
+              that reads the API's author filter */}
+          <Button
+            as={Link}
+            to={`/feed?author=${user._id}`}
+            variant="outline-primary"
+          >
+            Feed
+          </Button>
+          {canEdit && <EditUser user={user} onUserUpdated={onEdit} />}
+          {canDelete && <DeleteUser user={user} onUserDeleted={onDelete} />}
+        </div>
       </Card.Body>
     </Card>
   );
